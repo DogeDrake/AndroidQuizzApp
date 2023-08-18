@@ -28,7 +28,7 @@ interface ApiService {
     ): Call<QuestionWithAnswersResponse.Answer>
      */
 
-    @GET("api/quizzes/quizzes")
+    @GET("quizzes/quizzes")
     fun getQuizzes(): Call <QuizzesResponse>
 
 

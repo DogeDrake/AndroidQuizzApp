@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.quizzmyapp.Adapters.QuizAdapter
 import com.example.quizzmyapp.Api.ApiService
 import com.example.quizzmyapp.Api.QuizzesResponse
 import com.example.quizzmyapp.R
@@ -37,6 +36,7 @@ class QuizListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        ApiRest.initService()
         loadQuizzes()
     }
 
@@ -50,8 +50,13 @@ class QuizListFragment : Fragment() {
                 val body = response.body()
                 if (response.isSuccessful && body != null) {
                     Log.i(TAG, body.toString())
+
+                    /*
                     datos.clear()
                     datos.addAll(body)
+                     */
+
+                    adapter.setData(body)
                     Log.i(TAG, datos.toString())
                     for (a in datos) {
                         Log.i(TAG, "entroooo!!!!")

@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.example.quizzmyapp'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.quizzmyapp"
         minSdk 21
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -47,5 +47,6 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.7.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22'
 
 }
