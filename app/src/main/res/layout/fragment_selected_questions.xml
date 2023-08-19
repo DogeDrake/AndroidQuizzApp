@@ -3,15 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".Fragments.QuizListFragment">
+    tools:context=".Fragments.SelectedQuestionsFragment">
 
-    <!-- res/layout/fragment_quiz_list.xml -->
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:backgroundTint="@color/white"
-        android:layout_marginTop="70dp"/>
-    </FrameLayout>
+        android:text="@string/hello_blank_fragment" />
+
+</FrameLayout>

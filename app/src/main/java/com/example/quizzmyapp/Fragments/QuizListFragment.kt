@@ -6,8 +6,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.quizzmyapp.Api.ApiService
+import com.example.quizzmyapp.Adapters.QuizAdapter
 import com.example.quizzmyapp.Api.QuizzesResponse
+import com.example.quizzmyapp.Fragments.SelectedQuestionsFragment
 import com.example.quizzmyapp.R
 import retrofit2.Call
 import retrofit2.Callback
@@ -26,18 +27,34 @@ class QuizListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_quiz_list, container, false)
-        recyclerView = rootView.findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        adapter = QuizAdapter()
-        recyclerView.adapter = adapter
-        return rootView
+        return inflater.inflate(R.layout.fragment_quiz_list, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         ApiRest.initService()
         loadQuizzes()
+
+        adapter = QuizAdapter(datos) { question ->
+            activity?.let {
+                val fragment = SelectedQuestionsFragment()
+                fragment.arguments = Bundle()
+                fragment.arguments?.putSerializable("questionInfo", question)
+
+                activity?.supportFragmentManager?.beginTransaction()?.addToBackStack(null)
+                    ?.replace(R.id.container, fragment)?.commit()
+            }
+        }
+        recyclerView = view.findViewById(R.id.recyclerView)
+
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView.adapter = adapter
+
+
     }
 
     private fun loadQuizzes() {
@@ -50,13 +67,8 @@ class QuizListFragment : Fragment() {
                 val body = response.body()
                 if (response.isSuccessful && body != null) {
                     Log.i(TAG, body.toString())
-
-                    /*
                     datos.clear()
                     datos.addAll(body)
-                     */
-
-                    adapter.setData(body)
                     Log.i(TAG, datos.toString())
                     for (a in datos) {
                         Log.i(TAG, "entroooo!!!!")
@@ -64,6 +76,8 @@ class QuizListFragment : Fragment() {
                         //InfoRutinas.add(a.attributes.publishedAt)
                     }
                     // Imprimir aqui el listado con logs
+                    //Set Data Adapter Method
+                    adapter?.notifyDataSetChanged()
                 } else {
                     Log.e(TAG, response.errorBody()?.string() ?: "Porto")
                 }

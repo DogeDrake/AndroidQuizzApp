@@ -1,8 +1,10 @@
 package com.example.quizzmyapp
 
 import QuizListFragment
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
@@ -16,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: ArrayAdapter<*>
+    private var value = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +27,8 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         goToFragment(QuizListFragment())
+
+
 
 
 
