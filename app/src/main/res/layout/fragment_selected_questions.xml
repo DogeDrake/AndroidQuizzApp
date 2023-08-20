@@ -5,10 +5,47 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.SelectedQuestionsFragment">
 
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Pregunta en grande -->
+        <TextView
+            android:id="@+id/textViewQuestion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¿Cuál es la capital de Francia?"
+            android:textSize="24sp" />
+
+        <!-- RecyclerView para respuestas -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewAnswers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Texto para indicar si la respuesta es correcta o incorrecta -->
+        <TextView
+            android:id="@+id/textViewResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/green"
+            android:textSize="18sp" />
+
+        <!-- Botón para pasar a la siguiente pregunta -->
+        <Button
+            android:id="@+id/buttonNextQuestion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="Siguiente Pregunta"
+            android:visibility="gone" />
+
+    </LinearLayout>
 
 </FrameLayout>

@@ -13,6 +13,9 @@ import androidx.navigation.NavController
 import com.example.quizzmyapp.databinding.ActivityMainBinding
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import com.example.quizzmyapp.Api.QuizzesResponse
+import com.example.quizzmyapp.Api.RandomQAReponseItem
+import com.example.quizzmyapp.Fragments.SelectedQuestionsFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,9 +32,28 @@ class MainActivity : AppCompatActivity() {
         goToFragment(QuizListFragment())
 
 
+        //Revisar
+        val quizInfo = intent.getSerializableExtra("quizInfo") as? QuizzesResponse.QuizzesResponseItem
+
+        if (quizInfo != null) {
+            val fragment = SelectedQuestionsFragment().apply {
+                arguments = Bundle().apply {
+                    putSerializable("questionInfo", quizInfo)
+                }
+            }
+
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.container, fragment)
+                .commit()
+        }
 
 
 
+    }
+//Error
+    fun onUserAnswer(selectedAnswer: RandomQAReponseItem.AllAnswer) {
+        // Aquí puedes implementar la lógica para manejar la respuesta del usuario
+        // y mostrar la siguiente pregunta si es correcta
     }
 
     fun FragmentActivity.findNavigationController(@IdRes host: Int): NavController {
