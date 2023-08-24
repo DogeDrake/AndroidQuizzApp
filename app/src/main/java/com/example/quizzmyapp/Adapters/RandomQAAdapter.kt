@@ -1,63 +1,55 @@
-package com.example.quizzmyapp.Adapters
-
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.quizzmyapp.Api.RandomQAReponseItem
+import com.example.quizzmyapp.Adapters.QuizAdapter
+import com.example.quizzmyapp.Api.AllAnswer
+import com.example.quizzmyapp.Api.QuizzesResponse
+import com.example.quizzmyapp.Api.RandomQAReponse
 import com.example.quizzmyapp.R
 
 class RandomQAAdapter(
-    private val data: List<RandomQAReponseItem>,
-    private val listener: OnItemClickListener
-) : RecyclerView.Adapter<RandomQAAdapter.ViewHolder>() {
-    //Error
-    private var selectedAnswer: RandomQAReponseItem.AllAnswer? = null
+    private val datos: ArrayList<RandomQAReponse>,
+    /*val onClick: (RandomQAReponse) -> Unit*/
+) : RecyclerView.Adapter<RandomQAAdapter.QuizViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuizViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_answer, parent, false)
-        return ViewHolder(view)
+        return QuizViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(data[position])
+    override fun onBindViewHolder(holder: QuizViewHolder, position: Int) {
+        val item = datos[position]
+        holder.bind(item)
     }
 
-    override fun getItemCount(): Int = data.size
+    override fun getItemCount(): Int = datos.size
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class QuizViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var textViewQuestion = itemView.findViewById<TextView>(R.id.textViewQuestion)
+        var card = itemView.findViewById<CardView>(R.id.CardAnswer)
+        var textViewAnswer = itemView.findViewById<TextView>(R.id.textViewAnswer)
 
-        private val cardAnswer = itemView.findViewById<CardView>(R.id.CardAnswer)
-        private val textViewAnswer = itemView.findViewById<TextView>(R.id.textViewAnswer)
-        //Error
-        fun bind(item: RandomQAReponseItem) {
-            textViewAnswer.text = item.answerText
+        fun bind(item: RandomQAReponse) {
+            Log.e("Se escribe", "Se escribe " + item.questionText)
 
-            cardAnswer.setOnClickListener {
-                selectedAnswer = item.allAnswers[adapterPosition]
-                notifyDataSetChanged()
-                listener.onItemClick(selectedAnswer!!)
+           // textViewQuestion.text = item.questionText
+            // Suponiendo que las respuestas se almacenan en allAnswers
+            // Aquí solo se muestra la primera respuesta, puedes ajustarlo según tus necesidades
+            if (item.allAnswers.isNotEmpty()) {
+                textViewAnswer.text = item.allAnswers[0].answerText
+            } else {
+                textViewAnswer.text = "No hay respuestas disponibles"
             }
 
-            if (selectedAnswer != null && selectedAnswer!!.answerId == item.allAnswers[0].answerId) {
-                cardAnswer.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.green))
-            } else {
-                cardAnswer.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.white))
+            card.setOnClickListener {
+                //onClick(item)
             }
         }
-    }
-    //Error
-    interface OnItemClickListener {
-        fun onItemClick(selectedAnswer: RandomQAReponseItem.AllAnswer)
-    }
-
-    fun setAnswers(question: RandomQAReponseItem) {
-        selectedAnswer = null
-        notifyDataSetChanged()
     }
 }

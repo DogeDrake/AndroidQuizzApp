@@ -36,10 +36,10 @@ interface ApiService {
     fun getAnswersForQuestion(@Path("questionId") questionId: Long): Call<List<QuestionWithAnswersResponse.Answer>>
 
 
-    @GET("quizzes/quizzes/{quizId}/random-questions-and-answers")
+    @GET("quizzes/quizzes/{quizId}/themed-random-question")
     fun getRandomQuestionsAndAnswers(
         @Path("quizId") quizId: Int
-    ): Call<List<RandomQAReponseItem>>
+    ): Call<RandomQAReponse>
 
 
 

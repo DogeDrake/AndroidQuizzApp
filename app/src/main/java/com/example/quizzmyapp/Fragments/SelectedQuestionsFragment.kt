@@ -1,5 +1,3 @@
-package com.example.quizzmyapp.Fragments
-
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,23 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.quizzmyapp.Adapters.RandomQAAdapter
+import com.example.quizzmyapp.Api.AllAnswer
 import com.example.quizzmyapp.Api.QuizzesResponse
-import com.example.quizzmyapp.Api.RandomQAReponseItem
+import com.example.quizzmyapp.Api.RandomQAReponse
 import com.example.quizzmyapp.R
-
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SelectedQuestionsFragment : Fragment(), RandomQAAdapter.OnItemClickListener {
+class SelectedQuestionsFragment : Fragment() {
 
-    private val TAG = "SelectedQuestions"
+    private val TAG = "SelectedQuestionsFragme"
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: RandomQAAdapter
-    private val datos: ArrayList<RandomQAReponseItem> = ArrayList()
-    private var currentQuestionIndex = 0
-    private lateinit var currentQuestion: RandomQAReponseItem
+    private val datos: ArrayList<RandomQAReponse> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,58 +31,61 @@ class SelectedQuestionsFragment : Fragment(), RandomQAAdapter.OnItemClickListene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recetasBundle = arguments?.getSerializable("questionInfo") as? QuizzesResponse.QuizzesResponseItem
 
-        adapter = RandomQAAdapter(datos, this)
+        val recetasBundle =
+            arguments?.getSerializable("questionInfo") as? QuizzesResponse.QuizzesResponseItem
+
+        loadRandomQuestionsAndAnswers(recetasBundle!!.quizId)
+
+
+
+        adapter = RandomQAAdapter(datos)
+
+
         recyclerView = view.findViewById(R.id.recyclerViewAnswers)
+
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
 
-        loadRandomQuestionsAndAnswers(recetasBundle?.quizId ?: 0)
+
     }
 
     private fun loadRandomQuestionsAndAnswers(quizId: Int) {
         val call = ApiRest.service.getRandomQuestionsAndAnswers(quizId)
-        call.enqueue(object : Callback<List<RandomQAReponseItem>> {
+        call.enqueue(object : Callback<RandomQAReponse> {
             override fun onResponse(
-                call: Call<List<RandomQAReponseItem>>,
-                response: Response<List<RandomQAReponseItem>>
+                call: Call<RandomQAReponse>,
+                response: Response<RandomQAReponse>
             ) {
-                if (response.isSuccessful) {
-                    val randomQAResponse = response.body()
-                    randomQAResponse?.let {
-                        datos.addAll(it)
-                        if (datos.isNotEmpty()) {
-                            currentQuestion = datos[currentQuestionIndex]
-                            adapter.setAnswers(currentQuestion)
-                        }
-                    }
+                val body = response.body()
+                if (response.isSuccessful && body != null) {
+                    Log.i(TAG, body.toString())
+                    // Limpia la lista actual de datos
+
+                    // Agrega el objeto completo a la lista
+                    datos.add(body)
+                    // Notifica al adaptador que los datos han cambiado
+                    adapter.notifyDataSetChanged()
                 } else {
-                    Log.e(TAG, response.errorBody()?.string() ?: "Error en la llamada")
+                    Log.e(
+                        TAG,
+                        "Error response: ${response.errorBody()?.string() ?: "Error en la llamada"}"
+                    )
                 }
             }
 
             override fun onFailure(
-                call: Call<List<RandomQAReponseItem>>,
+                call: Call<RandomQAReponse>,
                 t: Throwable
             ) {
-                Log.e(TAG, t.message ?: "Error en la llamada")
+                Log.e(TAG, "API call failed: ${t.message ?: "Error en la llamada"}")
             }
         })
     }
-    //Error
-    override fun onItemClick(selectedAnswer: RandomQAReponseItem.AllAnswer) {
-        if (selectedAnswer.isCorrect) {
-            currentQuestionIndex++
-            if (currentQuestionIndex < datos.size) {
-                currentQuestion = datos[currentQuestionIndex]
-                adapter.setAnswers(currentQuestion)
-                resetUI()
-            }
-        }
-    }
-    //Error
-    private fun resetUI() {
-        adapter.clearSelection()
-    }
+
+
 }
+
+

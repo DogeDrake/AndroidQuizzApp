@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.quizzmyapp.Adapters.QuizAdapter
 import com.example.quizzmyapp.Api.QuizzesResponse
-import com.example.quizzmyapp.Fragments.SelectedQuestionsFragment
 import com.example.quizzmyapp.R
 import retrofit2.Call
 import retrofit2.Callback
@@ -77,7 +76,7 @@ class QuizListFragment : Fragment() {
                     }
                     // Imprimir aqui el listado con logs
                     //Set Data Adapter Method
-                    adapter?.notifyDataSetChanged()
+                    adapter.notifyDataSetChanged()
                 } else {
                     Log.e(TAG, response.errorBody()?.string() ?: "Porto")
                 }

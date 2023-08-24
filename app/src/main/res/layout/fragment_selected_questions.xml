@@ -16,14 +16,15 @@
             android:id="@+id/textViewQuestion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="¿Cuál es la capital de Francia?"
-            android:textSize="24sp" />
+            android:text="Question Text"/>
+        <!-- Otros atributos de diseño -->
+
 
         <!-- RecyclerView para respuestas -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewAnswers"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp" />
 
