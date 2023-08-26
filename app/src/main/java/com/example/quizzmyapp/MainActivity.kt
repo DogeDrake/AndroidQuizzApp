@@ -1,7 +1,7 @@
 package com.example.quizzmyapp
 
+import QuizFragment
 import QuizListFragment
-import SelectedQuestionsFragment
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         val quizInfo = intent.getSerializableExtra("quizInfo") as? QuizzesResponse.QuizzesResponseItem
 
         if (quizInfo != null) {
-            val fragment = SelectedQuestionsFragment().apply {
+            val fragment = QuizFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable("questionInfo", quizInfo)
                 }

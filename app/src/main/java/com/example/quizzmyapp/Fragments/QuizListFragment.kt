@@ -38,7 +38,7 @@ class QuizListFragment : Fragment() {
 
         adapter = QuizAdapter(datos) { question ->
             activity?.let {
-                val fragment = SelectedQuestionsFragment()
+                val fragment = QuizFragment()
                 fragment.arguments = Bundle()
                 fragment.arguments?.putSerializable("questionInfo", question)
 

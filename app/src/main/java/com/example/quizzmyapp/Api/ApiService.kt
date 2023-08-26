@@ -29,20 +29,22 @@ interface ApiService {
      */
 
     @GET("quizzes/quizzes")
-    fun getQuizzes(): Call <QuizzesResponse>
+    fun getQuizzes(): Call<QuizzesResponse>
 
 
     @GET("questions/{questionId}/answers")
     fun getAnswersForQuestion(@Path("questionId") questionId: Long): Call<List<QuestionWithAnswersResponse.Answer>>
 
+    /*
+        @GET("quizzes/quizzes/{quizId}/themed-random-question")
+        fun getRandomQuestionsAndAnswers(
+            @Path("quizId") quizId: Int
+        ): Call<RandomQAReponse>
+    */
+
 
     @GET("quizzes/quizzes/{quizId}/themed-random-question")
-    fun getRandomQuestionsAndAnswers(
-        @Path("quizId") quizId: Int
-    ): Call<RandomQAReponse>
-
-
-
+    fun getQuizQuestion(@Path("quizId") quizId: Int): Call<RandomQAReponse>
 
 
 }
